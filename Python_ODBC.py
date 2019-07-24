@@ -9,13 +9,23 @@ class NwProducts():
         self.docker_Northwind = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};' + 'SERVER=' + self.server + ';DATABASE=' + self.database +';UID=' + self.username + ';PWD=' + self.password)
         self.cursor = self.docker_Northwind.cursor()
 
+    def create(self):
+        self.cursor.execute('CREATE TABLE Test (Region_ID Int, RegionDescription Varchar(255))')
+        self.cursor.commit()
+
+    def insert(self):
+        self.cursor.execute("INSERT into Test (Region_ID, RegionDescription) VALUES (5, 'Southern')")
+        self.cursor.commit()
+
+    def read(self):
+        result=self.cursor.execute("Select * FROM Test")
+        rows = result.fetchall()
+        for row in rows:
+            print(row.RegionID, row.RegionDescription)
+
+    # def delete(self):
 
 my_db = NwProducts()
-
-result = my_db.cursor.execute('SELECT * FROM CATEGORIES')
-
-rows = result.fetchall()
-for row in rows:
-    print(row.CategoryID, row.CategoryName, row.Description)
-
-
+#my_db.create()
+my_db.insert()
+#my_db.read()
